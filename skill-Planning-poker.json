@@ -1,0 +1,269 @@
+{
+  "intents": [
+    {
+      "intent": "start",
+      "examples": [
+        {
+          "text": "start"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "end",
+      "examples": [
+        {
+          "text": "end"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sys-number",
+      "values": [],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "webhooks": [
+    {
+      "url": "",
+      "name": "main_webhook",
+      "headers": []
+    }
+  ],
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Moderator use this node to update the issue number",
+      "output": {
+        "generic": [
+          {
+            "title": "Estimate for issue <strong>$issue_number</strong>",
+            "options": [
+              {
+                "label": "1",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 1"
+                  }
+                }
+              },
+              {
+                "label": "2",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 2"
+                  }
+                }
+              },
+              {
+                "label": "3",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 3"
+                  }
+                }
+              },
+              {
+                "label": "5",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 5"
+                  }
+                }
+              },
+              {
+                "label": "8",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 8"
+                  }
+                }
+              },
+              {
+                "label": "13",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 13"
+                  }
+                }
+              },
+              {
+                "label": "21 ",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number - 21 😱"
+                  }
+                }
+              },
+              {
+                "label": " ¯\\_(ツ)_/¯ ",
+                "value": {
+                  "input": {
+                    "text": " Issue: $issue_number -  ¯\\_(ツ)_/¯"
+                  }
+                }
+              }
+            ],
+            "description": "Please select your estimate for this <a href=\"https://github.ibm.com/watson-engagement-advisor/wea-backlog/issues/$issue_number\" target=\"_blank\">issue</a>",
+            "response_type": "option"
+          }
+        ]
+      },
+      "context": {
+        "issue_number": 333311
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    },
+    {
+      "type": "standard",
+      "title": "Another sizing",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Next estimate..."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "Welcome"
+      },
+      "conditions": "#start",
+      "dialog_node": "node_9_1594941796586",
+      "previous_sibling": "node_5_1594909111000"
+    },
+    {
+      "type": "standard",
+      "title": "Exit sizing",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Thanks for participating in the Hill 3 sizing."
+              },
+              {
+                "text": "Bye! 👋 "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "multiline"
+          }
+        ]
+      },
+      "conditions": "#end",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_8_1594955462895",
+      "previous_sibling": "node_9_1594941796586"
+    },
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_8_1594955462895",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Estimate entered",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Thank you for your estimate. "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "title": "Next sizing",
+            "options": [
+              {
+                "label": "Start",
+                "value": {
+                  "input": {
+                    "text": "Start"
+                  }
+                }
+              },
+              {
+                "label": "End",
+                "value": {
+                  "input": {
+                    "text": "End"
+                  }
+                }
+              }
+            ],
+            "description": "Please wait for the moderator to update the issue number before selecting",
+            "response_type": "option"
+          }
+        ]
+      },
+      "conditions": "@sys-number",
+      "dialog_node": "node_5_1594909111000",
+      "previous_sibling": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": "Did you mean:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Did you mean:"
+    },
+    "spelling_auto_correct": false
+  },
+  "learning_opt_out": true,
+  "name": "Planning poker",
+  "language": "en",
+  "description": ""
+}
